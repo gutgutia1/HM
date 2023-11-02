@@ -340,7 +340,7 @@ exports.createDateExcel = async (req, res) => {
     const totalHeats = await Heat.aggregate([
       {
         $addFields:{
-          dateField: { $toDate: inputDate}
+          dateField: { $toDate: "$inputDate"}
         }
       },
       {
