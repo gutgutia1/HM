@@ -108,11 +108,31 @@ function ItemsRegisterForm() {
     useEffect(() => {
         setValue('partNo', partName)
     }, [partName])
-    const itemlist = ["abc", "def"]
+    const itemlist = ["S.tube", "def"]
     const itempartmap = {
-        "abc": "1",
-        "def": "2",
-        "other": ""
+        "S.tube": "1",
+        "A.R.B Bkt Top ": "3701",
+        "Tooth Sigment": "2",
+        "Gear Case Cover Front": "3703",
+        "Casing": "3",
+        "Kp-32": "4",
+        "Drop Cover": "5104",
+        "Support Plate": "3702",
+        "Devil gear": "3354",
+        "Mast BKt-150": "3073",
+        "CrankPeel": "5",
+        "Bearing with sign board": "6",
+        "Front spring bkt hanger": "0106",
+        "H-Cycle":"3728",
+        "Mast BKt-200": "3074",
+        "White Iron": "3071",
+        "Contact winding plain": "1792",
+        "Guide plate":"3712",
+        "Rear Spring cycle": "0103",
+        "Rear Spring cycle-2": "0107",
+        "Socket Cap":"309",
+        "Rear Spring Bkt hanger": "0180",
+
     }
    
     const renderChildFunction=()=>{
@@ -148,7 +168,7 @@ function ItemsRegisterForm() {
                 </option>
 
                 {
-                    itemlist.map((item, idx) => (
+                    Object.keys(itempartmap).map((item, idx) => (
                         <option value={item} key={idx}>{item}</option>
                     ))
                 }

@@ -200,7 +200,7 @@ function HeatRegisterForm() {
           onChange={handleSelectChange}
         >
           <option value="" disabled>
-            Choose a Category
+            Choose worker type
           </option>
           <option value="Company">
             Company
@@ -236,13 +236,13 @@ function HeatRegisterForm() {
 
       {
         !customMetalGrade && <div className="flex flex-col space-y-2">
-          <label className="text-sm text-richblack-5" htmlFor="metalGrade">
-            Metal Grade <sup className="text-black-200">*</sup>
+          <label className="text-sm text-richblack-5" htmlFor="mouldingSection">
+            Moulding Section <sup className="text-black-200">*</sup>
           </label>
           <select
-            {...register("metalGrade", { required: true })}
+            {...register("mouldingSection", { required: true })}
             defaultValue=""
-            id="metalGrade"
+            id="mouldingSection"
             className="form-style w-full border rounded py-2 px-3"
             onChange={handleSelectChangeForMtalGrade}
           >
@@ -261,15 +261,15 @@ function HeatRegisterForm() {
           </select>
           {errors.heatCategory && (
             <span className="ml-2 text-xs tracking-wide text-black-200">
-              Course Category is required
+              Moulding Section is required is required
             </span>
           )}
         </div>
       }
       {
         customMetalGrade && <NormalInput
-          label="Metal Grade"
-          name="metalGrade"
+          label="Moulding Section"
+          name="mouldingSection"
           placeholder=""
           register={register}
           errors={errors}
@@ -278,8 +278,8 @@ function HeatRegisterForm() {
       }
 
       <NormalInput
-        label="Moulding Section"
-        name="mouldingSection"
+        label="Metal Grade"
+        name="metalGrade"
         placeholder=""
         register={register}
         errors={errors}

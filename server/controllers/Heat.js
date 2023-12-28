@@ -102,7 +102,7 @@ exports.createDateExcel = async (req, res) => {
         if (exceldatalower[`Company-${heat_obj['shiftNumber'].toUpperCase()}`]) {
           tempData = exceldatalower[`Company-${heat_obj['shiftNumber'].toUpperCase()}`]
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
+            if (mg == heat_obj['mouldingSection']) {
               tempData[mg] += 1
               tempData["total"] += 1
               break
@@ -112,8 +112,8 @@ exports.createDateExcel = async (req, res) => {
         else {
           tempData = {}
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
-              tempData[heat_obj['metalGrade']] = 1
+            if (mg == heat_obj['mouldingSection']) {
+              tempData[heat_obj['mouldingSection']] = 1
             }
             else {
               tempData[mg] = 0
@@ -127,7 +127,7 @@ exports.createDateExcel = async (req, res) => {
         if (exceldatalower[`${heat_obj['contractorName'].toUpperCase()}-${heat_obj['shiftNumber'].toUpperCase()}`]) {
           tempData = exceldatalower[`${heat_obj['contractorName'].toUpperCase()}-${heat_obj['shiftNumber'].toUpperCase()}`]
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
+            if (mg == heat_obj['mouldingSection']) {
               tempData[mg] += 1
               tempData["total"] += 1
               break
@@ -137,8 +137,8 @@ exports.createDateExcel = async (req, res) => {
         else {
           tempData = {}
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
-              tempData[heat_obj['metalGrade']] = 1
+            if (mg == heat_obj['mouldingSection']) {
+              tempData[heat_obj['mouldingSection']] = 1
             }
             else {
               tempData[mg] = 0
@@ -360,7 +360,7 @@ exports.createDateExcel = async (req, res) => {
         if (monthlyExcelData[`Company-${heat_obj['shiftNumber'].toUpperCase()}`]) {
           tempData = monthlyExcelData[`Company-${heat_obj['shiftNumber'].toUpperCase()}`]
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
+            if (mg == heat_obj['mouldingSection']) {
               tempData[mg] += 1
               tempData["total"] += 1
               break
@@ -370,8 +370,8 @@ exports.createDateExcel = async (req, res) => {
         else {
           tempData = {}
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
-              tempData[heat_obj['metalGrade']] = 1
+            if (mg == heat_obj['mouldingSection']) {
+              tempData[heat_obj['mouldingSection']] = 1
             }
             else {
               tempData[mg] = 0
@@ -385,7 +385,7 @@ exports.createDateExcel = async (req, res) => {
         if (monthlyExcelData[`${heat_obj['contractorName'].toUpperCase()}-${heat_obj['shiftNumber'].toUpperCase()}`]) {
           tempData = monthlyExcelData[`${heat_obj['contractorName'].toUpperCase()}-${heat_obj['shiftNumber'].toUpperCase()}`]
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
+            if (mg == heat_obj['mouldingSection']) {
               tempData[mg] += 1
               tempData["total"] += 1
               break
@@ -395,8 +395,8 @@ exports.createDateExcel = async (req, res) => {
         else {
           tempData = {}
           for (let mg of metGrade) {
-            if (mg == heat_obj['metalGrade']) {
-              tempData[heat_obj['metalGrade']] = 1
+            if (mg == heat_obj['mouldingSection']) {
+              tempData[heat_obj['mouldingSection']] = 1
             }
             else {
               tempData[mg] = 0
