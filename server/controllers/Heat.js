@@ -21,7 +21,7 @@ exports.heatDetails = async (req, res) => {
       shiftNumber
     } = req.body
     // console.log(inputDate)
-    const existingHeat = await Heat.findOne({ heatNo })
+    const existingHeat = await Heat.findOne({ heatNo,inputDate })
     if (existingHeat) {
       return res.status(400).json({
         success: false,
