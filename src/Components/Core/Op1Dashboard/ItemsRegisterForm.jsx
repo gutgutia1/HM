@@ -6,6 +6,7 @@ import ChipInput from '../ChipInput';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { getItemList } from '../../../Services/GetDetails/ItemList';
 import { editItem, registerItem } from '../../../Services/HeatRegister/ItemRegister';
 import { setEdit, setHeat, setitem } from '../../../Slices/op1Slice';
 
@@ -16,6 +17,8 @@ function ItemsRegisterForm() {
         const dispatch = useDispatch()
         const {heat,edit,item} = useSelector((state)=>state.op1)
         const {token} = useSelector((state)=>state.auth)
+        const [itempartmap,setItemPartMap] = useState({})
+        const [loading, setLoading] = useState(false)
 
     const onSubmit = async (data) => {
         data.heatNo = heat._id
@@ -42,9 +45,44 @@ function ItemsRegisterForm() {
        
     };
 
+    const getItemLists = async()=>{
+        setLoading(true)
+      try {
+        const result  = await getItemList(token)
+        // console.log(result.length)
+        if(result){
+
+            for(var x=0 ; x<result.length;x++){
+                // console.log(result[x])
+                var s=`${result[x]['itemName']} ${result[x]['partNo']}`
+                itempartmap[s]=[result[x]['partNo'],result[x]['customerName'],result[x]['category']]                
+               setItemPartMap(itempartmap)
+            }
+        }
+        const ordered = Object.keys(itempartmap).sort().reduce(
+            (obj, key) => { 
+              obj[key] = itempartmap[key]; 
+              return obj;
+            }, 
+            {}
+          );
+          setItemPartMap(ordered)
+        setLoading(false)
+        
+        // console.log(Object.keys(itempartmap).length)
+        
+      } catch (error) {
+        console.log("Could not fetch items list.", error)
+      }
+      
+        
+    }
     useEffect(()=>{
         // console.log(edit)
+        getItemLists()
+
         if(edit && item){
+            console.log(item.customerName)
             setValue("itemName",item.itemName)
             setValue("partNo",item.partNo)
             setValue("customerName",item.customerName)
@@ -61,6 +99,8 @@ function ItemsRegisterForm() {
     const [boxesPoured, setboxesPoured] = useState(item ? item.boxesPoured : 0);
     const [customItemName, setcustomItemName] = useState(false)
     const [partName, setPartName] = useState(item ? item.partNo : "")
+    const [customerName,setCustomerName] = useState(item ? item.customerName : "")
+    const [category, setCategory] = useState(item? item.category : "")
    
 
     //     const firstInputValue = watch('cavity ', 0);
@@ -93,10 +133,14 @@ function ItemsRegisterForm() {
             setcustomItemName(true);
             setValue("itemName", "");
             setPartName("")
+            setCustomerName("")
+            setCategory("")
         } else {
             setcustomItemName(false);
             let v = event.target.value
-            setPartName(itempartmap[v])
+            setPartName(itempartmap[v][0])
+            setCustomerName(itempartmap[v][1])
+            setCategory(itempartmap[v][2])
         }
     }
     const handleoncpartNO = (event) => {
@@ -105,35 +149,55 @@ function ItemsRegisterForm() {
         }
 
     }
+    const handleonccustomerName = (event) => {
+
+         
+            setCustomerName(event.target.value)
+        
+
+    }
+    const handleonccategory = (event) => {
+        if (customItemName) {
+            setCategory(event.target.value)
+        }
+
+    }
     useEffect(() => {
         setValue('partNo', partName)
     }, [partName])
+    useEffect(() => {
+        // console.log(customerName)
+        setValue('customerName', customerName)
+    }, [customerName])
+    useEffect(() => {
+        setValue('category', category)
+    }, [category])
     const itemlist = ["S.tube", "def"]
-    const itempartmap = {
-        "S.tube": "1",
-        "A.R.B Bkt Top ": "3701",
-        "Tooth Sigment": "2",
-        "Gear Case Cover Front": "3703",
-        "Casing": "3",
-        "Kp-32": "4",
-        "Drop Cover": "5104",
-        "Support Plate": "3702",
-        "Devil gear": "3354",
-        "Mast BKt-150": "3073",
-        "CrankPeel": "5",
-        "Bearing with sign board": "6",
-        "Front spring bkt hanger": "0106",
-        "H-Cycle":"3728",
-        "Mast BKt-200": "3074",
-        "White Iron": "3071",
-        "Contact winding plain": "1792",
-        "Guide plate":"3712",
-        "Rear Spring cycle": "0103",
-        "Rear Spring cycle-2": "0107",
-        "Socket Cap":"309",
-        "Rear Spring Bkt hanger": "0180",
+    // const itempartmap = {
+    //     "S.tube": "1",
+    //     "A.R.B Bkt Top ": "3701",
+    //     "Tooth Sigment": "2",
+    //     "Gear Case Cover Front": "3703",
+    //     "Casing": "3",
+    //     "Kp-32": "4",
+    //     "Drop Cover": "5104",
+    //     "Support Plate": "3702",
+    //     "Devil gear": "3354",
+    //     "Mast BKt-150": "3073",
+    //     "CrankPeel": "5",
+    //     "Bearing with sign board": "6",
+    //     "Front spring bkt hanger": "0106",
+    //     "H-Cycle":"3728",
+    //     "Mast BKt-200": "3074",
+    //     "White Iron": "3071",
+    //     "Contact winding plain": "1792",
+    //     "Guide plate":"3712",
+    //     "Rear Spring cycle": "0103",
+    //     "Rear Spring cycle-2": "0107",
+    //     "Socket Cap":"309",
+    //     "Rear Spring Bkt hanger": "0180",
 
-    }
+    // }
    
     const renderChildFunction=()=>{
 
@@ -147,7 +211,7 @@ function ItemsRegisterForm() {
     
 
     
-  if (heat != null) {
+  if (heat != null ) {
     return <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-6 space-y-4">
     <h2 className="text-2xl font-bold mb-4">Item Registeration</h2>
 
@@ -156,7 +220,7 @@ function ItemsRegisterForm() {
             <label className="text-sm text-richblack-5" htmlFor="itemName">
                 Item Name  <sup className="text-red-500">*</sup>
             </label>
-            <select
+            {!loading ? <select
                 {...register("itemName", { required: true })}
                 defaultValue=""
                 id="itemName"
@@ -175,7 +239,7 @@ function ItemsRegisterForm() {
                 <option value="custom">
                     Enter Custom Value
                 </option>
-            </select>
+            </select> : <p className="text-center">Loading...</p>}
             {errors.itemName && (
                 <span className="ml-2 text-xs tracking-wide text-red-500">
                     ItemName is required
@@ -194,8 +258,58 @@ function ItemsRegisterForm() {
             getValues={getValues} />
     }
 
+       <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="partNo" >
+                    Part No <sup className="text-red-500">*</sup>
+                </label>
+                <input
+                    id="partNo"
+                    type="text"
+                    placeholder=""
+                    disabled={!customItemName}
+                    value={partName}
+                    {...register("partNo", { required: true })}
+                    onChange={handleoncpartNO}
+                    className="form-style w-full border rounded py-2 px-3"
+                />
+                {errors.partNo && (
+                    <span className="ml-2 text-xs tracking-wide text-red-500">
+                        Part No is required
+                    </span>
+                )}
+            </div>
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="customerName" >
+                    Customer Name
+                </label>
+                <input
+                    id="customerName"
+                    type="text"
+                    placeholder=""
+                    value={customerName}
+                    {...register("customerName", { required: false })}
+                    onChange={handleonccustomerName}
+                    className="form-style w-full border rounded py-2 px-3"
+                />
+            </div>
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="category" >
+                    Category
+                </label>
+                <input
+                    id="category"
+                    type="text"
+                    placeholder=""
+                    disabled={!customItemName}
+                    value={category}
+                    {...register("category", { required: false })}
+                    onChange={handleonccategory}
+                    className="form-style w-full border rounded py-2 px-3"
+                />
+            </div>
 
-    {
+
+    {/* {
         rows.map((row) => (
 
             row.name === "partNo" ? (<div className="flex flex-col space-y-2" key={row.id}>
@@ -221,6 +335,7 @@ function ItemsRegisterForm() {
                 label={row.label}
                 type={row?.type}
                 name={row.name}
+                value={row.name}
                 placeholder=""
                 register={register}
                 disabled={row.name === "partNo" ? !customItemName : false}
@@ -230,7 +345,7 @@ function ItemsRegisterForm() {
 
 
         ))
-    }
+    } */}
 
     <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="boxesMoulded">

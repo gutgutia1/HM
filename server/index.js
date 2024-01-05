@@ -3,6 +3,7 @@ const app=express()
 const dotenv = require("dotenv");
 const userRoutes =  require("./routes/user")
 const op1Routes = require("./routes/op1routes")
+const adminRoutes = require("./routes/adminroutes")
 const database = require("./config/database")
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/opone",op1Routes)
+app.use("/api/v1/admin",adminRoutes)
 app.listen(PORT, () => {
 	console.log(`App is listening at ${PORT}`);
 });
